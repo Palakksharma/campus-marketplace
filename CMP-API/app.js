@@ -1,8 +1,7 @@
 import express from "express"
 import dotenv from "dotenv";
-
 import cors from "cors";
-
+import path from "path";
 
 import authRouter from "./api/routes/auth.routes.js";
 import collegeRouter from "./api/routes/college.routes.js";
@@ -33,6 +32,16 @@ app.use("/api/products", productRouter);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/chat", chatRouter);
 app.use("/api/orders", orderRouter);
+
+// Serve static frontend files from the compiled React build folder
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "../dist")));
+
+// Wildcard route to handle frontend client-side routing
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
+
 app.use((err, req, res, next) => {
     try {
         import("fs").then((fs) => {
