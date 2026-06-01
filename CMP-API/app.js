@@ -33,8 +33,11 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/chat", chatRouter);
 app.use("/api/orders", orderRouter);
 
+import { fileURLToPath } from "url";
+
 // Serve static frontend files from the compiled React build folder
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "../dist")));
 
 // Wildcard route to handle frontend client-side routing
